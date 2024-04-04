@@ -1,0 +1,68 @@
+﻿@model ProyectoPAW.Models.Treceta
+
+@{
+    ViewData["Title"] = "Detalles";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h1>Detalles</h1>
+
+<div class="d-flex">
+    <div class="col mx-2">
+        <img class="img-fluid" src="~/assets/images/placeholderCocina.png" />
+    </div>
+    <div class="col">
+        <dl class="row mx-4">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+            <hr />
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+            <hr />
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Instrucciones)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Instrucciones)
+            </dd>
+            <hr />
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Categoria)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Categoria)
+            </dd>
+            <hr />
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Ingredientes)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Ingredientes)
+            </dd>
+            <hr />
+            <dt class="col-sm-4">
+                @* @Html.DisplayNameFor(model => model.Usuario) *@
+                Creador
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Usuario.Nombre)
+                @Html.DisplayFor(model => model.Usuario.Apellidos)
+            </dd>
+        </dl>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Modificar</a> |
+    <a asp-action="Index">Volver</a>
+</div>
+
+
+

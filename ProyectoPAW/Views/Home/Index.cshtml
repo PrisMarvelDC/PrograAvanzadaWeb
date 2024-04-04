@@ -1,0 +1,30 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    @* saca el usuario actual junto con sus identidades *@
+    var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+    @* Se saca el rol y si no lo tiene se asigna uno *@
+    var roleOfUser = claimsIdentity != null ? claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value : "Estudiante";
+
+    if (roleOfUser == "Administrador")
+    {
+        <h1>Hola Administrador</h1>
+    }
+    else if (roleOfUser == "Profesor")
+    {
+        <h1>Hola Profesor</h1>
+    }
+    else if (roleOfUser == "Estudiante")
+    {
+        <h1>Hola Estudiante</h1>
+    }
+}
+else
+{
+    <h1>Por favor inicie sesión</h1>
+}
