@@ -87,12 +87,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Treceta" asp-action="Index">Receta</a>
                         </li>
                     </ul>
-                    <div class="d-flex align-items-center ms-auto">
+                    @* <div class="d-flex align-items-center ms-auto">
                         <a class="" id="login" asp-area="Identity" asp-page="/Account/Login">
                             <button type="button" class="btn btn-default px-3 me-2">
                                 Iniciar Sesión
                             </button>
-                        </a>
+                        </a> *@
+                    </div>
+                    <partial name="_LoginPartial" />
+                </div>
                         @* <button type="button" class="btn btn-primary me-3">
                             Registrarse
                         </button> *@
