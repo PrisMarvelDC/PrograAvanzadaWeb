@@ -1,6 +1,7 @@
 ﻿@using System.Security.Claims
 @{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 
 @if (User.Identity.IsAuthenticated)
@@ -11,20 +12,24 @@
     @* Se saca el rol y si no lo tiene se asigna uno *@
     var roleOfUser = claimsIdentity != null ? claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value : "Estudiante";
 
+    <h1>Home usuario loggeado</h1>
+
+
     if (roleOfUser == "Administrador")
     {
-        <h1>Hola Administrador</h1>
+        <h1>Este usuario es Administrador</h1>
     }
     else if (roleOfUser == "Profesor")
     {
-        <h1>Hola Profesor</h1>
+        <h1>Este usaurio es Profesor</h1>
     }
     else if (roleOfUser == "Estudiante")
     {
-        <h1>Hola Estudiante</h1>
+        <h1>Este usuario es Estudiante</h1>
     }
 }
 else
 {
+    <h1>Home usuario sin loggear</h1>
     <h1>Por favor inicie sesión</h1>
 }
