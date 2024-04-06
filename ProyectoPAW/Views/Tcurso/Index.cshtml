@@ -1,54 +1,43 @@
-﻿@model IEnumerable<ProyectoPAW.Models.Tcurso>
+﻿@using ProyectoPAW.Services
 
+
+@model IEnumerable<ProyectoPAW.Models.Tcurso>
+@inject ICantidadRecetas cantidaRecetas
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Cursos";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Cursos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Nuevo Curso</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Profesor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Usuario)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Profesor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card">
+                <a asp-action="Details" asp-route-id="@item.Id"><img src="~/assets/images/placeholderCurso.png" class="card-img-top" alt="card example" /></a>
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
+                    <p>La cantidad de Recetas agregadas son: @cantidaRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
+
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                   <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <br />
+                    <a asp-area="" asp-controller="TcursoRecetums" asp-action="Index">Agregar recetas al curso</a>
+
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
