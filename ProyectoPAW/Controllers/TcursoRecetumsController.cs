@@ -72,14 +72,17 @@ namespace ProyectoPAW.Controllers
         }
 
         // GET: TcursoRecetums/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+       
+
+        // GET: TcursoRecetums/Edit/5
+        public async Task<IActionResult> Edit(long? cursoId, long? recetaId)
         {
-            if (id == null || _context.TcursoReceta == null)
+            if (cursoId == null || recetaId == null)
             {
                 return NotFound();
             }
 
-            var tcursoRecetum = await _context.TcursoReceta.FindAsync(id);
+            var tcursoRecetum = await _context.TcursoReceta.FindAsync(cursoId, recetaId);
             if (tcursoRecetum == null)
             {
                 return NotFound();
@@ -89,9 +92,9 @@ namespace ProyectoPAW.Controllers
             return View(tcursoRecetum);
         }
 
-        // POST: TcursoRecetums/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("Id,CursoId,RecetaId")] TcursoRecetum tcursoRecetum)

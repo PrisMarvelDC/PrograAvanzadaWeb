@@ -1,15 +1,16 @@
-﻿@model IEnumerable<ProyectoPAW.Models.TcursoRecetum>
+﻿@model IEnumerable<ProyectoPAW.Models.TcursoUsuario>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
-
 }
 
 
 <p>
-    <a asp-action="Create">Agregar recetas al curso</a>
+    <a asp-action="Create">Agregar usuarios al curso</a>
 </p>
+
+
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
     @foreach (var item in Model)
@@ -18,14 +19,17 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Curso.Nombre)</h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Receta.Nombre)</p>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Usuario.Nombre)</p>
                     <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                     <br />
-                    
+
 
                 </div>
             </div>
         </div>
     }
 </div>
+
+
+
