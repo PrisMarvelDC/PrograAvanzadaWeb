@@ -72,7 +72,7 @@ namespace ProyectoPAW.Controllers
         }
 
         // GET: TcursoRecetums/Edit/5
-       
+
 
         // GET: TcursoRecetums/Edit/5
         public async Task<IActionResult> Edit(long? cursoId, long? recetaId)
@@ -163,14 +163,14 @@ namespace ProyectoPAW.Controllers
             {
                 _context.TcursoReceta.Remove(tcursoRecetum);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TcursoRecetumExists(long id)
         {
-          return (_context.TcursoReceta?.Any(e => e.CursoId == id)).GetValueOrDefault();
+            return (_context.TcursoReceta?.Any(e => e.CursoId == id)).GetValueOrDefault();
         }
     }
 }

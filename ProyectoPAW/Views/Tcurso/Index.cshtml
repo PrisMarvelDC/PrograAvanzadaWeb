@@ -2,7 +2,8 @@
 
 
 @model IEnumerable<ProyectoPAW.Models.Tcurso>
-@inject ICantidadRecetas cantidaRecetas
+@inject ICantidadRecetas cantidadRecetas
+@inject ICantidadUsuarios cantidadUsuarios
 @{
     ViewData["Title"] = "Cursos";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
@@ -24,13 +25,15 @@
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
-                    <p>La cantidad de Recetas agregadas son: @cantidaRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
-
+                    <p>La cantidad de Recetas agregadas son: @cantidadRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
+                    <p>La cantidad de Usuarios registados son: @cantidadUsuarios.ObtenerCantidadUsuarios((int)item.Id)</p>
                     <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                   <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
                     <br />
                     <a asp-area="" asp-controller="TcursoRecetums" asp-action="Index">Agregar recetas al curso</a>
+                    <br />
+                    <a asp-area="" asp-controller="TcursoUsuarios" asp-action="Index">Agregar usuarios al curso</a>
 
 
                 </div>
@@ -38,6 +41,3 @@
         </div>
     }
 </div>
-
-
-

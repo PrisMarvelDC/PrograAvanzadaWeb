@@ -20,6 +20,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICantidadRecetas, CantidadRecetas>();
+builder.Services.AddScoped<ICantidadUsuarios, CantidadUsuarios>();
 
 #region Authorization
 
