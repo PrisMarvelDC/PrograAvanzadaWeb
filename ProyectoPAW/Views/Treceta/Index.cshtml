@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ProyectoPAW.Models.Treceta>
 
+
 @{
     ViewData["Title"] = "Recetas";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
@@ -8,10 +9,10 @@
 <h1>Recetas</h1>
 
 <p>
-    <a asp-action="Create">Nueva Receta</a>
+    <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nueva Receta</a>
 </p>
 
-<div class="row row-cols-1 row-cols-md-2 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model) {
     <div class="col">
         <div class="card">
@@ -20,9 +21,9 @@
                 <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
                 <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
 
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Ver</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Eliminar</a>
             </div>
         </div>
     </div>
