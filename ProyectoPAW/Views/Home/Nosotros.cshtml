@@ -1,0 +1,9 @@
+﻿@model Nosotros
+
+<div>
+	<h1 class="display-4">@Model.NombreComercial</h1><br />
+	<label>@Model.Telefono</label><br />
+	<input class="h4" asp-for="CorreoVentas" /><br />
+	<input class="h4" asp-for="CorreoInfo" /><br />
+	<a asp-action="Index">Volver al Inicio</a>
+</div>

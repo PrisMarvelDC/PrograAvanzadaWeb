@@ -13,7 +13,8 @@
     var roleOfUser = claimsIdentity != null ? claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value : "Estudiante";
 
     <h1>Home usuario loggeado</h1>
-
+    <br />
+    <br />
 
     if (roleOfUser == "Administrador")
     {
@@ -30,6 +31,13 @@
 }
 else
 {
-    <h1>Home usuario sin loggear</h1>
+    <h1>Usted no se encuentra Loggeado</h1>
+    <br />
+    <br />
     <h1>Por favor inicie sesión</h1>
+    <br />
+    <br />
+    <div class="col mx-2">
+        <img class="img-fluid" src="~/assets/images/placeholderCocina.png" />
+    </div>
 }

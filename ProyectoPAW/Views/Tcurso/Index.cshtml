@@ -12,7 +12,7 @@
 <h1>Cursos</h1>
 
 <p>
-    <a asp-action="Create">Nuevo Curso</a>
+    <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nuevo Curso</a>
 </p>
 
 
@@ -27,9 +27,9 @@
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
                     <p>La cantidad de Recetas agregadas son: @cantidadRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
                     <p>La cantidad de Usuarios registados son: @cantidadUsuarios.ObtenerCantidadUsuarios((int)item.Id)</p>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Ver</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Eliminar</a>
                     <br />
                     <a asp-area="" asp-controller="TcursoRecetums" asp-action="Index">Agregar recetas al curso</a>
                     <br />

@@ -32,15 +32,13 @@
                 <label asp-for="UsuarioId" class="control-label"></label>
                 <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId"></select>
             </div>
+            <br />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-default px-3 me-2">Volver</a>
+                <input type="submit" value="Guardar" class="btn" style="background-color: #9c3840; color: white;">
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
