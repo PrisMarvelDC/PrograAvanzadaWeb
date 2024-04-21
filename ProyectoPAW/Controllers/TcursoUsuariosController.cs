@@ -60,12 +60,11 @@ namespace ProyectoPAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CursoId,UsuarioId")] TcursoUsuario tcursoUsuario)
         {
-            if (ModelState.IsValid)
-            {
+            
                 _context.Add(tcursoUsuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id", tcursoUsuario.CursoId);
             ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id", tcursoUsuario.UsuarioId);
             return View(tcursoUsuario);
@@ -101,8 +100,7 @@ namespace ProyectoPAW.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            
                 try
                 {
                     _context.Update(tcursoUsuario);
@@ -120,7 +118,7 @@ namespace ProyectoPAW.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id", tcursoUsuario.CursoId);
             ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id", tcursoUsuario.UsuarioId);
             return View(tcursoUsuario);
@@ -147,23 +145,24 @@ namespace ProyectoPAW.Controllers
         }
 
         // POST: TcursoUsuarios/Delete/5
+
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(long cursoId, string usuarioId)
         {
-            if (_context.TcursoUsuarios == null)
+            var tcursoUsuario = await _context.TcursoUsuarios.FirstOrDefaultAsync(m => m.CursoId == cursoId && m.UsuarioId == usuarioId);
+            if (tcursoUsuario == null)
             {
-                return Problem("Entity set 'ProyectoWebAvanzadoContext.TcursoUsuarios'  is null.");
+                return NotFound();
             }
-            var tcursoUsuario = await _context.TcursoUsuarios.FindAsync(id);
-            if (tcursoUsuario != null)
-            {
-                _context.TcursoUsuarios.Remove(tcursoUsuario);
-            }
-            
+
+            _context.TcursoUsuarios.Remove(tcursoUsuario);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
 
         private bool TcursoUsuarioExists(long id)
         {

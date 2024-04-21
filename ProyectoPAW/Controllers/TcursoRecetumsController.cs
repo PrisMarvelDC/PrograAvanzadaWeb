@@ -60,12 +60,11 @@ namespace ProyectoPAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CursoId,RecetaId")] TcursoRecetum tcursoRecetum)
         {
-            if (ModelState.IsValid)
-            {
+            
                 _context.Add(tcursoRecetum);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id", tcursoRecetum.CursoId);
             ViewData["RecetaId"] = new SelectList(_context.Treceta, "Id", "Id", tcursoRecetum.RecetaId);
             return View(tcursoRecetum);
@@ -104,8 +103,7 @@ namespace ProyectoPAW.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            
                 try
                 {
                     _context.Update(tcursoRecetum);
@@ -123,24 +121,22 @@ namespace ProyectoPAW.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id", tcursoRecetum.CursoId);
             ViewData["RecetaId"] = new SelectList(_context.Treceta, "Id", "Id", tcursoRecetum.RecetaId);
             return View(tcursoRecetum);
         }
 
         // GET: TcursoRecetums/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        // GET: TcursoRecetums/Delete
+        public async Task<IActionResult> Delete(long? cursoId, long? recetaId)
         {
-            if (id == null || _context.TcursoReceta == null)
+            if (cursoId == null || recetaId == null)
             {
                 return NotFound();
             }
 
-            var tcursoRecetum = await _context.TcursoReceta
-                .Include(t => t.Curso)
-                .Include(t => t.Receta)
-                .FirstOrDefaultAsync(m => m.CursoId == id);
+            var tcursoRecetum = await _context.TcursoReceta.FindAsync(cursoId, recetaId);
             if (tcursoRecetum == null)
             {
                 return NotFound();
@@ -150,23 +146,24 @@ namespace ProyectoPAW.Controllers
         }
 
         // POST: TcursoRecetums/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(long cursoId, long recetaId)
         {
-            if (_context.TcursoReceta == null)
+            var tcursoRecetum = await _context.TcursoReceta.FindAsync(cursoId, recetaId);
+            if (tcursoRecetum == null)
             {
-                return Problem("Entity set 'ProyectoWebAvanzadoContext.TcursoReceta'  is null.");
-            }
-            var tcursoRecetum = await _context.TcursoReceta.FindAsync(id);
-            if (tcursoRecetum != null)
-            {
-                _context.TcursoReceta.Remove(tcursoRecetum);
+                return NotFound();
             }
 
+            _context.TcursoReceta.Remove(tcursoRecetum);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+
 
         private bool TcursoRecetumExists(long id)
         {
