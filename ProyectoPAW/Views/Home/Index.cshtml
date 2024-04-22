@@ -12,32 +12,21 @@
     @* Se saca el rol y si no lo tiene se asigna uno *@
     var roleOfUser = claimsIdentity != null ? claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value : "Estudiante";
 
-    <h1>Home usuario loggeado</h1>
-    <br />
-    <br />
 
     if (roleOfUser == "Administrador")
     {
-        <h1>Este usuario es Administrador</h1>
+        @await Html.PartialAsync("_HomeAdmin")
     }
     else if (roleOfUser == "Profesor")
     {
-        <h1>Este usaurio es Profesor</h1>
+        @await Html.PartialAsync("_HomeProfesor")
     }
     else if (roleOfUser == "Estudiante")
     {
-        <h1>Este usuario es Estudiante</h1>
+        @await Html.PartialAsync("_HomeEstudiante")
     }
 }
 else
 {
-    <h1>Usted no se encuentra Loggeado</h1>
-    <br />
-    <br />
-    <h1>Por favor inicie sesión</h1>
-    <br />
-    <br />
-    <div class="col mx-2">
-        <img class="img-fluid" src="~/assets/images/placeholderCocina.png" />
-    </div>
+    @await Html.PartialAsync("_HomeNoLoggeado")
 }
