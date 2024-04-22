@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ProyectoPAW.Models.Treceta>
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Recetas Profesores";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var usuarioActual = User.FindFirstValue(ClaimTypes.Role); // Obtener el rol del usuario actual
+    var numeroRecetas = Model.Count(r => r.UsuarioId == userId && usuarioActual == "Profesor");
+}
+
+<br />
+<h1>Recetas de los (@numeroRecetas)</h1>
+<br />
+
+@if (numeroRecetas > 0)
+{
+    <p>
+        <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nueva Receta</a>
+    </p>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model.Where(r => r.UsuarioId == userId && usuarioActual == "Profesor"))
+        {
+            <div class="col">
+                <div class="card">
+                    <a asp-action="Details" asp-route-id="@item.Id"><img src="~/assets/images/placeholderCocina.png" class="card-img-top" alt="card example" /></a>
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Ver</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <div class="text-center">
+        <h2>Aún no has creado ninguna receta</h2>
+        <p>¡Inspírate y comienza a crear tus deliciosas recetas!</p>
+        <br />
+        <div class="d-grid gap-2 col-2 mx-auto">
+            <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nueva Receta</a>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+}

@@ -11,6 +11,11 @@
 <p>
     <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nueva Receta</a>
 </p>
+<p>
+   
+    <a class="nav-link text-dark" asp-area="" asp-controller="Treceta" asp-action="RecetasProfesor">Recetas de los profesores</a>
+
+</p>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model) {

@@ -35,6 +35,12 @@ namespace ProyectoPAW.Controllers
             return View(await proyectoWebAvanzadoContext.ToListAsync());
         }
 
+        public async Task<IActionResult> RecetasProfesor()
+        {
+            var proyectoWebAvanzadoContext = _context.Treceta.Include(t => t.Usuario);
+            return View(await proyectoWebAvanzadoContext.ToListAsync());
+        }
+
         // GET: Treceta/Details/5
         public async Task<IActionResult> Details(long? id)
         {
