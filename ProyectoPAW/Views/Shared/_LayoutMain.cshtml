@@ -93,7 +93,18 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Treceta" asp-action="MisRecetas">Mi Recetario</a>
                             </li>
-
+                            if (roleOfUser == "Estudiante")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tcurso" asp-action="CurosEstudiantes">Mis Cursos</a>
+                                </li>
+                            }
+                            if (roleOfUser == "Profesor")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Tcurso" asp-action="CursosProfesor">Mis Cursos</a>
+                                </li>
+                            }
                             if (roleOfUser == "Administrador")
                             {
                                 <li class="nav-item">

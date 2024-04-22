@@ -1,0 +1,66 @@
+﻿@using ProyectoPAW.Services
+@model IEnumerable<ProyectoPAW.Models.Tcurso>
+@inject ICantidadRecetas cantidadRecetas
+@inject ICantidadUsuarios cantidadUsuarios
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Cursos";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var numeroCursos = Model.Count(r => r.UsuarioId == userId);
+}
+
+<h1>Mis Cursos (@numeroCursos)</h1>
+
+
+@if (numeroCursos > 0)
+{
+    <p>
+        <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nuevo Curso</a>
+    </p>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model.Where(r => r.UsuarioId == userId))
+        {
+            <div class="col">
+                <div class="card">
+                    <a asp-action="Details" asp-route-id="@item.Id"><img src="~/assets/images/placeholderCurso.png" class="card-img-top" alt="card example" /></a>
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
+                        <p>La cantidad de Recetas agregadas son: @cantidadRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
+                        <p>La cantidad de Usuarios registados son: @cantidadUsuarios.ObtenerCantidadUsuarios((int)item.Id)</p>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Ver</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Eliminar</a>
+                        <br />
+                        <a asp-area="" asp-controller="TcursoRecetums" asp-action="Index">Agregar recetas al curso</a>
+                        <br />
+                        <a asp-area="" asp-controller="TcursoUsuarios" asp-action="Index">Agregar usuarios al curso</a>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <div class="text-center">
+        <h2>No hay cursos asignados</h2>
+        <p>¡Despierta tu creatividad y comienza a diseñar tus fascinantes lecciones!</p>
+        <br />
+        <div class="d-grid gap-2 col-2 mx-auto">
+            <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nuevo Curso</a>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+}

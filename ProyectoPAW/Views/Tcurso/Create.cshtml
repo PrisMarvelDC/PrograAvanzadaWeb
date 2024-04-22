@@ -1,8 +1,10 @@
 ﻿@model ProyectoPAW.Models.Tcurso
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <h1>Create</h1>
@@ -23,14 +25,12 @@
                 <input asp-for="Descripcion" class="form-control" />
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Profesor" class="control-label"></label>
-                <input asp-for="Profesor" class="form-control" />
-                <span asp-validation-for="Profesor" class="text-danger"></span>
-            </div>
+
+            <input asp-for="Profesor" class="form-control" type="hidden" value="No procede" />
+            
             <div class="form-group">
                 <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId"></select>
+                <select asp-for="UsuarioId" class ="form-control" asp-items="ViewBag.UsuarioId" value="@userId"></select>
             </div>
             <br />
             <div class="form-group">

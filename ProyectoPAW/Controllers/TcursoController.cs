@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ProyectoPAW.Areas.Identity.Data;
 using ProyectoPAW.Models;
 
 namespace ProyectoPAW.Controllers
@@ -12,10 +14,12 @@ namespace ProyectoPAW.Controllers
     public class TcursoController : Controller
     {
         private readonly ProyectoWebAvanzadoContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TcursoController(ProyectoWebAvanzadoContext context)
+        public TcursoController(ProyectoWebAvanzadoContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Tcurso
@@ -45,11 +49,21 @@ namespace ProyectoPAW.Controllers
         }
 
         // GET: Tcurso/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            // Obtener la lista de usuarios con el rol de Profesor
+            var profesores = await _userManager.GetUsersInRoleAsync("Profesor");
+
+            // Crear una lista de SelectListItem para pasar a la vista
+            var profesoresSelectList = profesores
+                .Select(u => new SelectListItem { Value = u.Id, Text = $"{u.Nombre} {u.Apellidos}" })
+                .ToList();
+
+            ViewData["UsuarioId"] = new SelectList(profesoresSelectList, "Value", "Text");
             return View();
         }
+
+
 
         // POST: Tcurso/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -64,14 +78,23 @@ namespace ProyectoPAW.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id", tcurso.UsuarioId);
+            
+            // Obtener la lista de usuarios con el rol de Profesor
+            var profesores = await _userManager.GetUsersInRoleAsync("Profesor");
+
+            // Crear una lista de SelectListItem para pasar a la vista
+            var profesoresSelectList = profesores
+                .Select(u => new SelectListItem { Value = u.Id, Text = $"{u.Nombre} {u.Apellidos}" })
+                .ToList();
+
+            ViewData["UsuarioId"] = new SelectList(profesoresSelectList, "Value", "Text");
             return View(tcurso);
         }
 
         // GET: Tcurso/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null || _context.Tcursos == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -81,7 +104,16 @@ namespace ProyectoPAW.Controllers
             {
                 return NotFound();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id", tcurso.UsuarioId);
+
+            // Obtener la lista de usuarios con el rol de Profesor
+            var profesores = await _userManager.GetUsersInRoleAsync("Profesor");
+
+            // Crear una lista de SelectListItem para pasar a la vista
+            var profesoresSelectList = profesores
+                .Select(u => new SelectListItem { Value = u.Id, Text = $"{u.Nombre} {u.Apellidos}" })
+                .ToList();
+
+            ViewData["UsuarioId"] = new SelectList(profesoresSelectList, "Value", "Text", tcurso.UsuarioId);
             return View(tcurso);
         }
 
@@ -117,7 +149,14 @@ namespace ProyectoPAW.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id", tcurso.UsuarioId);
+            var profesores = await _userManager.GetUsersInRoleAsync("Profesor");
+
+            // Crear una lista de SelectListItem para pasar a la vista
+            var profesoresSelectList = profesores
+                .Select(u => new SelectListItem { Value = u.Id, Text = $"{u.Nombre} {u.Apellidos}" })
+                .ToList();
+
+            ViewData["UsuarioId"] = new SelectList(profesoresSelectList, "Value", "Text", tcurso.UsuarioId);
             return View(tcurso);
         }
 
@@ -157,6 +196,49 @@ namespace ProyectoPAW.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> CurosEstudiantes()
+        {
+            // Obtener el usuario actualmente autenticado
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Obtener los cursos en los que está matriculado el usuario actual
+            var cursosDelUsuario = await _context.TcursoUsuarios
+                .Where(cu => cu.UsuarioId == user.Id)
+                .Select(cu => cu.Curso)
+                .ToListAsync();
+
+            return View(cursosDelUsuario);
+        }
+
+
+        public async Task<IActionResult> DetailsCurosEstudiantes(long? id)
+        {
+            if (id == null || _context.Tcursos == null)
+            {
+                return NotFound();
+            }
+
+            var tcurso = await _context.Tcursos
+                .Include(t => t.Usuario)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (tcurso == null)
+            {
+                return NotFound();
+            }
+
+            return View(tcurso);
+        }
+
+        public async Task<IActionResult> CursosProfesor()
+        {
+            var proyectoWebAvanzadoContext = _context.Tcursos.Include(t => t.Usuario);
+            return View(await proyectoWebAvanzadoContext.ToListAsync());
         }
 
         private bool TcursoExists(long id)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ProyectoPAW.Models
 {
@@ -12,11 +13,16 @@ namespace ProyectoPAW.Models
         }
 
         public long Id { get; set; }
-        public string Nombre { get; set; } 
-        public string Descripcion { get; set; } 
-        public string Profesor { get; set; } 
-        public string UsuarioId { get; set; } 
+        public string Nombre { get; set; }
 
+        [DisplayName("Descripción")]
+        public string Descripcion { get; set; } 
+        public string Profesor { get; set; }
+
+        [DisplayName("Profesor")]
+        public string UsuarioId { get; set; }
+
+        [DisplayName("Profesor")]
         public virtual AspNetUser? Usuario { get; set; } 
         public virtual ICollection<TcursoRecetum>? TcursoReceta { get; set; }
         public virtual ICollection<TcursoUsuario>? TcursoUsuarios { get; set; }

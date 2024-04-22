@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ProyectoPAW.Models.Tcurso>
+
+@{
+    
+    ViewData["Title"] = "Mis Cursos";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h1>Mis Cursos</h1>
+<hr />
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card">
+                <a asp-action="Details" asp-route-id="@item.Id"><img src="~/assets/images/placeholderCurso.png" class="card-img-top" alt="card example" /></a>
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
+                    <div class="text-center">
+                        <a asp-action="DetailsCurosEstudiantes" asp-route-id="@item.Id" class="btn btn-default">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
