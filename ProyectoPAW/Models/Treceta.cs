@@ -16,7 +16,9 @@ namespace ProyectoPAW.Models
         public string Descripcion { get; set; } 
         public string Instrucciones { get; set; } 
         public string Categoria { get; set; } 
-        public string Ingredientes { get; set; } 
+        public string Ingredientes { get; set; }
+
+        public string RecetaConUsuario => $"{Nombre} - Usuario: {Usuario.Nombre} {Usuario.Apellidos}";
 
         public virtual AspNetUser? Usuario { get; set; } 
         public virtual ICollection<TcursoRecetum>? TcursoReceta { get; set; }

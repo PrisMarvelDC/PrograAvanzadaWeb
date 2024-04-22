@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<ProyectoPAW.Models.AspNetUser>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista Usuarios";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 
-<h1>Lista de Usuarios</h1>
+<h2>Lista de Usuarios</h2>
 
 <p>
     <a class="btn" style="background-color: #9c3840; color: white;" id="register" asp-area="Identity" asp-page="/Account/Register">Registrar Usuario</a>
@@ -25,7 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th></th>
+            <th>Roles</th>
+            <th>Acciones</th>
+
         </tr>
     </thead>
     <tbody>
@@ -43,6 +45,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
+                <td>
+                    @foreach (var role in item.Roles)
+                    {
+                        <span>@role.Name</span>
+                    }
+                </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a> 
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Detalles</a> 

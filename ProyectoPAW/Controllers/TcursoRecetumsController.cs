@@ -48,10 +48,11 @@ namespace ProyectoPAW.Controllers
         // GET: TcursoRecetums/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id");
-            ViewData["RecetaId"] = new SelectList(_context.Treceta, "Id", "Id");
+            ViewData["Cursos"] = new SelectList(_context.Tcursos.Include(c => c.Usuario).ToList(), "Id", "CursoConProfesor");
+            ViewData["Recetas"] = new SelectList(_context.Treceta.Include(r => r.Usuario).ToList(), "Id", "RecetaConUsuario");
             return View();
         }
+
 
         // POST: TcursoRecetums/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

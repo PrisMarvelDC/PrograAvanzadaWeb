@@ -16,7 +16,9 @@ namespace ProyectoPAW.Models
         public string Nombre { get; set; }
 
         [DisplayName("Descripción")]
-        public string Descripcion { get; set; } 
+        public string Descripcion { get; set; }
+        public string CursoConProfesor => $"{Nombre} - Profesor: {Usuario.Nombre} {Usuario.Apellidos}";
+
         public string Profesor { get; set; }
 
         [DisplayName("Profesor")]

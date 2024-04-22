@@ -21,9 +21,11 @@ namespace ProyectoPAW.Controllers
         // GET: AspNetUsers
         public async Task<IActionResult> Index()
         {
-              return _context.AspNetUsers != null ? 
-                          View(await _context.AspNetUsers.ToListAsync()) :
-                          Problem("Entity set 'ProyectoWebAvanzadoContext.AspNetUsers'  is null.");
+            var usersWithRoles = await _context.AspNetUsers
+                .Include(u => u.Roles)
+                .ToListAsync();
+
+            return View(usersWithRoles);
         }
 
         // GET: AspNetUsers/Details/5
