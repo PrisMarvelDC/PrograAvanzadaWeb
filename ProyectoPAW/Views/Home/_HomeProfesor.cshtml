@@ -1,0 +1,72 @@
+﻿<style>
+    .jumbotron {
+        background-color: #f8f9fa;
+    }
+
+    .servicios {
+        margin-top: 50px;
+    }
+
+    .servicio {
+        margin-bottom: 30px;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .servicio h2 {
+            color: #007bff;
+        }
+
+        .servicio h2 {
+            color: black;
+        }
+</style>
+<br />
+<br />
+<br />
+<div class="jumbotron text-center">
+    <h1 class="display-4">Bienvenido a CulinaryCraft Academy</h1>
+    <p class="lead">¡Prepárate para descubrir nuevos sabores, experimentar con ingredientes frescos y crear platos que deleitarán a tus seres queridos!</p>
+</div>
+
+<div class="container servicios">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="servicio">
+                <h2>Crea tus Cursos</h2>
+                <p> Dale vida a tus ideas culinarias y comparte tu pasión por la cocina creando tus propios cursos. Desde conceptos básicos hasta técnicas avanzadas, tú defines el contenido. </p>
+                <br />
+                <div class="text-center">
+                    <a asp-controller="" asp-action="Index" class="btn text-white" style="background-color:#9c3840">Crear Curso</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="servicio">
+                <h2>Crea tus Recetas</h2>
+                <p>Descubre el chef que llevas dentro. Crea tus propias recetas con nuestra guía experta. ¡Atrévete a innovar y deleita tu paladar!</p>
+                <br />
+                <div class="text-center">
+                    <a asp-controller="Treceta" asp-action="MisRecetas" class="btn text-white" style="background-color:#9c3840">Crear Receta</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="servicio">
+                <h2>Biblioteca de Recetas</h2>
+                <p>Explora nuestra extensa colección de recetas inspiradoras. Desde clásicos reconfortantes hasta platos exóticos, nuestra biblioteca tiene algo para todos los gustos.</p>
+                <br />
+                <div class="text-center">
+                    <a asp-controller="" asp-action="Index" class="btn text-white" style="background-color:#9c3840">Visitar Biblioteca</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

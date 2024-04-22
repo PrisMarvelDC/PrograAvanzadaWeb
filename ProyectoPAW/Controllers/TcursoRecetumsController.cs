@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ProyectoPAW.Areas.Identity.Data;
 using ProyectoPAW.Models;
 
 namespace ProyectoPAW.Controllers
 {
     public class TcursoRecetumsController : Controller
+
     {
         private readonly ProyectoWebAvanzadoContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TcursoRecetumsController(ProyectoWebAvanzadoContext context)
+        public TcursoRecetumsController(ProyectoWebAvanzadoContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: TcursoRecetums
@@ -46,10 +51,28 @@ namespace ProyectoPAW.Controllers
         }
 
         // GET: TcursoRecetums/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            // Obtener los IDs de los usuarios con el rol de Profesor
+            var profesores = await _userManager.GetUsersInRoleAsync("Profesor");
+
+            // Obtener las recetas creadas por usuarios con el rol de Profesor
+            var recetasDeProfesores = _context.Treceta
+                .AsEnumerable() // Convertir a enumerable para permitir la comparación en memoria
+                .Where(r => profesores.Any(p => p.Id == r.UsuarioId))
+                .ToList();
+
+            // Crear una lista de SelectListItem para pasar a la vista
+            var recetasSelectList = recetasDeProfesores
+            .Select(r => new SelectListItem
+            {
+                Value = r.Id.ToString(),
+                Text = $"{r.Nombre} - {profesores.FirstOrDefault(p => p.Id == r.UsuarioId)?.Nombre} {profesores.FirstOrDefault(p => p.Id == r.UsuarioId)?.Apellidos}"
+            })
+            .ToList();
+
             ViewData["Cursos"] = new SelectList(_context.Tcursos.Include(c => c.Usuario).ToList(), "Id", "CursoConProfesor");
-            ViewData["Recetas"] = new SelectList(_context.Treceta.Include(r => r.Usuario).ToList(), "Id", "RecetaConUsuario");
+            ViewData["Recetas"] = new SelectList(recetasSelectList, "Value", "Text");
             return View();
         }
 
