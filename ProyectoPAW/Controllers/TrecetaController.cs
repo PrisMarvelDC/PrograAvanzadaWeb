@@ -161,24 +161,27 @@ namespace ProyectoPAW.Controllers
             return View(trecetum);
         }
 
-        // POST: Treceta/Delete/5
+        // POST: Trecetas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_context.Treceta == null)
+            var treceta = await _context.Treceta.FindAsync(id);
+            if (treceta == null)
             {
-                return Problem("Entity set 'ProyectoWebAvanzadoContext.Treceta'  is null.");
+                return NotFound();
             }
-            var trecetum = await _context.Treceta.FindAsync(id);
-            if (trecetum != null)
-            {
-                _context.Treceta.Remove(trecetum);
-            }
-            
+
+            // Eliminar todas las relaciones TcursoRecetum relacionadas
+            var relaciones = _context.TcursoReceta.Where(r => r.RecetaId == id);
+            _context.TcursoReceta.RemoveRange(relaciones);
+
+            // Ahora elimina la receta
+            _context.Treceta.Remove(treceta);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool TrecetumExists(long id)
         {

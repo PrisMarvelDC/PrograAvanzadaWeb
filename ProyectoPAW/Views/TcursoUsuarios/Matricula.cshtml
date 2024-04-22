@@ -1,0 +1,31 @@
+﻿@model ProyectoPAW.Models.TcursoUsuario
+
+@{
+    ViewData["Title"] = "Matricula";
+}
+
+
+<h4>Matricular en un curso</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Matricula">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CursoId" class="control-label">Curso</label>
+                <select asp-for="CursoId" class="form-control" asp-items="ViewBag.CursoId"></select>
+            </div>
+            <input type="hidden" asp-for="UsuarioId" />
+            <div class="form-group mt-1">
+                <input type="submit" value="Matricular" class="btn btn-primary" />
+            </div>
+        </form>
+        <div class="form-group mt-1">
+            <a class="btn btn-primary" asp-action="Index">Volver</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

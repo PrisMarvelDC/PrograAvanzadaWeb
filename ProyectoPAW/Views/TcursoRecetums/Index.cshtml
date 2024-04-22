@@ -21,7 +21,7 @@
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Receta.Nombre)</p>
 
                    
-                    <a asp-action="Edit" asp-route-cursoId="@item.CursoId" asp-route-recetaId="@item.RecetaId">Editar</a>
+                    @* <a asp-action="Edit" asp-route-cursoId="@item.CursoId" asp-route-recetaId="@item.RecetaId">Editar</a> *@
 
                     
                     <form asp-action="Delete" asp-route-cursoId="@item.CursoId" asp-route-recetaId="@item.RecetaId" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta receta del curso?');">

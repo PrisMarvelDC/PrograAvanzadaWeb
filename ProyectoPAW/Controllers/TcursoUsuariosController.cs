@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,8 +49,8 @@ namespace ProyectoPAW.Controllers
         // GET: TcursoUsuarios/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id");
-            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            ViewData["CursoId"] = new SelectList(_context.Tcursos.Include(c => c.Usuario), "Id", "CursoConProfesor");
+            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Nombre");
             return View();
         }
 
@@ -60,15 +61,54 @@ namespace ProyectoPAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CursoId,UsuarioId")] TcursoUsuario tcursoUsuario)
         {
-            
+            if (ModelState.IsValid)
+            {
                 _context.Add(tcursoUsuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            
-            ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "Id", tcursoUsuario.CursoId);
-            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "Id", tcursoUsuario.UsuarioId);
+            }
+            ViewData["CursoId"] = new SelectList(_context.Tcursos, "Id", "CursoConProfesor", tcursoUsuario.CursoId);
+            ViewData["UsuarioId"] = new SelectList(_context.AspNetUsers, "Id", "NombreCompleto", tcursoUsuario.UsuarioId);
             return View(tcursoUsuario);
         }
+
+        // GET: TcursoUsuarios/Matricula
+        public IActionResult Matricula()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtener el ID del usuario logueado
+            var cursos = _context.Tcursos.ToList();
+            ViewData["CursoId"] = new SelectList(cursos, "Id", "Nombre");
+            ViewData["UsuarioId"] = userId; // Establecer el ID de usuario en la vista
+            return View();
+        }
+
+        // POST: TcursoUsuarios/Matricula
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Matricula([Bind("CursoId,UsuarioId")] TcursoUsuario tcursoUsuario)
+        {
+            // Obtener el ID del usuario logueado
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Verificar si el usuario ya está matriculado en el curso
+            var existingMatricula = await _context.TcursoUsuarios
+                .FirstOrDefaultAsync(m => m.CursoId == tcursoUsuario.CursoId && m.UsuarioId == userId);
+
+            if (existingMatricula != null)
+            {
+                // El usuario ya está matriculado en el curso, redirigir a Index
+                return RedirectToAction("Index", "Tcurso");
+            }
+
+            // Asignar el ID de usuario al modelo TcursoUsuario
+            tcursoUsuario.UsuarioId = userId;
+
+            _context.Add(tcursoUsuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Tcurso");
+        }
+
+
 
         // GET: TcursoUsuarios/Edit/5
         public async Task<IActionResult> Edit(long? id)
@@ -162,6 +202,21 @@ namespace ProyectoPAW.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: TcursoUsuarios/QuitarMatricula
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuitarMatricula(long cursoId, string usuarioId)
+        {
+            var tcursoUsuario = await _context.TcursoUsuarios.FirstOrDefaultAsync(m => m.CursoId == cursoId && m.UsuarioId == usuarioId);
+            if (tcursoUsuario == null)
+            {
+                return NotFound();
+            }
+
+            _context.TcursoUsuarios.Remove(tcursoUsuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
 
         private bool TcursoUsuarioExists(long id)

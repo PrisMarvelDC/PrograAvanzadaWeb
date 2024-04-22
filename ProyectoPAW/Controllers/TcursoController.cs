@@ -59,9 +59,10 @@ namespace ProyectoPAW.Controllers
                 .Select(u => new SelectListItem { Value = u.Id, Text = $"{u.Nombre} {u.Apellidos}" })
                 .ToList();
 
-            ViewData["UsuarioId"] = new SelectList(profesoresSelectList, "Value", "Text");
+            ViewBag.UsuarioId = new SelectList(profesoresSelectList, "Value", "Text");
             return View();
         }
+
 
 
 
@@ -184,19 +185,22 @@ namespace ProyectoPAW.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            if (_context.Tcursos == null)
-            {
-                return Problem("Entity set 'ProyectoWebAvanzadoContext.Tcursos'  is null.");
-            }
             var tcurso = await _context.Tcursos.FindAsync(id);
-            if (tcurso != null)
+            if (tcurso == null)
             {
-                _context.Tcursos.Remove(tcurso);
+                return NotFound();
             }
-            
+
+            // Eliminar todas las relaciones TcursoRecetum relacionadas
+            var relaciones = _context.TcursoReceta.Where(r => r.CursoId == id);
+            _context.TcursoReceta.RemoveRange(relaciones);
+
+            // Ahora elimina el curso
+            _context.Tcursos.Remove(tcurso);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         public async Task<IActionResult> CurosEstudiantes()
         {

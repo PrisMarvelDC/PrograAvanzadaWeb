@@ -17,7 +17,14 @@ namespace ProyectoPAW.Models
 
         [DisplayName("Descripción")]
         public string Descripcion { get; set; }
-        public string CursoConProfesor => $"{Nombre} - Profesor: {Usuario.Nombre} {Usuario.Apellidos}";
+        public string? CursoConProfesor
+        {
+            get
+            {
+                var profesor = TcursoUsuarios.FirstOrDefault()?.Usuario;
+                return $"{Nombre} - Profesor: {profesor?.Nombre} {profesor?.Apellidos}";
+            }
+        }
 
         public string Profesor { get; set; }
 

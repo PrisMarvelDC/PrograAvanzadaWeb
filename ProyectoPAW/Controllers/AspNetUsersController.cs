@@ -89,7 +89,7 @@ namespace ProyectoPAW.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Nombre,Apellidos,Cedula,Telefono,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] AspNetUser aspNetUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Nombre,Apellidos,Cedula,Telefono,Email")] AspNetUser aspNetUser)
         {
             if (id != aspNetUser.Id)
             {
@@ -100,7 +100,16 @@ namespace ProyectoPAW.Controllers
             {
                 try
                 {
-                    _context.Update(aspNetUser);
+                    // Cargar el usuario desde la base de datos con todos los datos.
+                    var userFromDb = await _context.AspNetUsers.FindAsync(id);
+                    // Actualizar solo los campos que se enviaron en el formulario.
+                    userFromDb.Nombre = aspNetUser.Nombre;
+                    userFromDb.Apellidos = aspNetUser.Apellidos;
+                    userFromDb.Cedula = aspNetUser.Cedula;
+                    userFromDb.Telefono = aspNetUser.Telefono;
+                    userFromDb.Email = aspNetUser.Email;
+
+                    _context.Update(userFromDb);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -118,6 +127,7 @@ namespace ProyectoPAW.Controllers
             }
             return View(aspNetUser);
         }
+
 
         // GET: AspNetUsers/Delete/5
         public async Task<IActionResult> Delete(string id)

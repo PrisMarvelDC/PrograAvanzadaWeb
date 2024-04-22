@@ -1,37 +1,27 @@
 ﻿@model IEnumerable<ProyectoPAW.Models.Treceta>
 
-
 @{
-    ViewData["Title"] = "Recetas";
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 
-<h1>Recetas</h1>
-
 <p>
-    <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nueva Receta</a>
-</p>
-<p>
-   
-    <a class="nav-link text-dark" asp-area="" asp-controller="Treceta" asp-action="RecetasProfesor">Recetas de los profesores</a>
-
+    <a asp-action="Create">Crear nueva receta</a>
 </p>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model) {
-    <div class="col">
-        <div class="card">
-                <a asp-action="Details" asp-route-id="@item.Id"><img src="~/assets/images/placeholderCocina.png" class="card-img-top" alt="card example" /></a>
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
-                <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
-
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Ver</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Eliminar</a>
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta receta?');">
+                        <button type="submit" class="btn btn-link">Eliminar</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
     }
 </div>
-

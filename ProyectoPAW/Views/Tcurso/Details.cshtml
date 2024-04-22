@@ -1,4 +1,5 @@
 ﻿@model ProyectoPAW.Models.Tcurso
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Detalles";
@@ -32,6 +33,9 @@
 </div>
 <br />
 <div class="text-center">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-default px-3 me-2">Modificar</a>
+    @if (User.IsInRole("Profesor") || User.IsInRole("Administrador"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-default px-3 me-2">Modificar</a>
+    }
     <a asp-action="Index" class="btn btn-default px-3 me-2">Volver</a>
 </div>
