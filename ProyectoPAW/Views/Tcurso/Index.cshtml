@@ -24,9 +24,16 @@
 
     if (roleOfUser == "Profesor" || roleOfUser == "Administrador")
     {
-        <p>
+        <br />
+        <div>
             <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Nuevo Curso</a>
-        </p>
+
+
+            <a asp-area="" asp-controller="TcursoRecetums" asp-action="Index" class="btn" style="background-color: #9c3840; color: white;">Agregar recetas</a>
+
+            <a asp-area="" asp-controller="TcursoUsuarios" asp-action="Index" class="btn" style="background-color: #9c3840; color: white;">Agregar estudiantes</a>
+        </div>
+        <br />
     }
 }
 
@@ -40,12 +47,12 @@
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Descripcion)</p>
-                    <p>La cantidad de Recetas agregadas son: @cantidadRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
-                    <p>La cantidad de Usuarios registrados son: @cantidadUsuarios.ObtenerCantidadUsuarios((int)item.Id)</p>
-                    @if (User.IsInRole("Estudiante") && matriculado)
+                    <p>Recetas agregadas son: @cantidadRecetas.ObtenerCantidadRecetas((int)item.Id)</p>
+                    <p>Estudiantes matriculados: @cantidadUsuarios.ObtenerCantidadUsuarios((int)item.Id)</p>
+                    @* @if (User.IsInRole("Estudiante") && matriculado)
                     {
                         <p class="fw-bold">¡Ya estás matriculado en este curso!</p>
-                    }
+                    } *@
                     @if (User.IsInRole("Profesor") || User.IsInRole("Administrador"))
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Editar</a>
@@ -53,14 +60,7 @@
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default px-3 me-2">Eliminar</a>
                     }
 
-                    @if (User.IsInRole("Profesor") || User.IsInRole("Administrador"))
-                    {
-                        <br />
-                        <a asp-area="" asp-controller="TcursoRecetums" asp-action="Index">Agregar recetas al curso</a>
-                        <br />
-                        <a asp-area="" asp-controller="TcursoUsuarios" asp-action="Index">Agregar usuarios al curso</a>
-                        <br />
-                    }
+            
                 </div>
             </div>
         </div>

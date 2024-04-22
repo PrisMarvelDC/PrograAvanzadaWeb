@@ -25,8 +25,16 @@ namespace ProyectoPAW.Controllers
         // GET: Treceta
         public async Task<IActionResult> Index()
         {
-            var proyectoWebAvanzadoContext = _context.Treceta.Include(t => t.Usuario);
-            return View(await proyectoWebAvanzadoContext.ToListAsync());
+            // Obtener los IDs de los usuarios con el rol de Profesor
+            var profesores = await _userManager.GetUsersInRoleAsync("Profesor");
+
+            // Obtener las recetas creadas por usuarios con el rol de Profesor
+            var recetasDeProfesores = _context.Treceta
+                .Include(t => t.Usuario)
+                .ToList() // Convertir a lista para permitir la comparación en memoria
+                .Where(r => profesores.Any(p => p.Id == r.UsuarioId));
+
+            return View(recetasDeProfesores);
         }
 
         public async Task<IActionResult> MisRecetas()

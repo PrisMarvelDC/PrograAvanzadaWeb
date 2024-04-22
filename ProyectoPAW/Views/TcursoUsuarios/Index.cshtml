@@ -4,11 +4,11 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
-
+<br />
 <p>
-    <a asp-action="Create">Agregar usuarios al curso</a>
+    <a asp-action="Create" class="btn" style="background-color: #9c3840; color: white;">Agregar usuarios al curso</a>
 </p>
-
+<br />
 <div class="row row-cols-1 row-cols-md-2 g-4">
     @foreach (var item in Model)
     {
@@ -18,7 +18,7 @@
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Curso.Nombre)</h5>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Usuario.Nombre)</p>
                     <form asp-action="Delete" asp-route-cursoId="@item.CursoId" asp-route-usuarioId="@item.UsuarioId" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario del curso?');">
-                        <button type="submit" class="btn btn-link">Eliminar</button>
+                        <button type="submit" class="btn btn-default px-3 me-2">Eliminar</button>
                     </form>
                 </div>
             </div>

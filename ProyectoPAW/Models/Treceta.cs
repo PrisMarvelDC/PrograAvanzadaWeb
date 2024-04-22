@@ -13,7 +13,7 @@ namespace ProyectoPAW.Models
         }
 
         public long Id { get; set; }
-        [Required(ErrorMessage = "Este dato es requerido")]
+        
         public string? UsuarioId { get; set; }
         [Required(ErrorMessage = "Este dato es requerido")]
         public string Nombre { get; set; }
